@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr John's Integrated Clinic * TCM * AYUSH</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            200: '#bae0fd',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
+        .tab-active { border-bottom: 2px solid #3b82f6; color: #2563eb; font-weight: 600; }
+        .glass-header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-brand-100 selection:text-brand-700">
+
+    <!-- Top Announcement Bar / IST Live Status Bar -->
+    <div class="bg-slate-900 text-slate-300 text-xs py-2 px-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="inline-block w-2 h-2 rounded-full" id="status-dot"></span>
+                <span id="clinic-status-text" class="font-medium tracking-wide">Checking status...</span>
+                <span class="text-slate-500 hidden sm:inline">| IST (Indian Standard Time)</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="tel:+919876543210" class="hover:text-white transition-colors flex items-center gap-1.5"><i class="fa-solid fa-phone text-[10px]"></i> <span class="hidden sm:inline">Contact</span></a>
+                <a href="https://maps.app.goo.gl/7QSFYvToLCJuQALC8?g_st=ac" target="_blank" class="hover:text-white transition-colors flex items-center gap-1.5"><i class="fa-solid fa-location-dot text-[10px]"></i> <span>Taramani, Chennai</span></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 glass-header border-b border-slate-200/80 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            
+            <!-- Brand Logo & Name -->
+            <a href="#" class="flex items-center gap-3.5 group">
+                <div class="w-12 h-12 rounded-xl border border-slate-200 p-1 bg-white shadow-sm flex items-center justify-center overflow-hidden shrink-0 group-hover:border-brand-300 transition-colors">
+                    <img 
+                        src="https://lh3.googleusercontent.com/chat_attachment/AE_S-ptUpx73a_sT0SGrW3Q_s6C3U2sJm2C1p_pD_C2-k3k" 
+                        alt="Dr John's Integrated Clinic Logo" 
+                        class="w-full h-full object-contain object-center"
+                        onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'text-brand-600 font-bold text-xl\'>DJ</div>';"
+                    />
+                </div>
+                <div>
+                    <h1 class="font-bold text-slate-900 text-base sm:text-lg leading-tight tracking-tight">
+                        Dr John's Integrated Clinic
+                    </h1>
+                    <p class="text-xs font-semibold text-brand-600 tracking-wider uppercase">TCM &bull; AYUSH</p>
+                </div>
+            </a>
+
+            <!-- Right Controls: Language Switcher & Booking Action -->
+            <div class="flex items-center gap-3">
+                
+                <!-- 4-Way Language Selector -->
+                <div class="relative inline-block text-left">
+                    <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs sm:text-sm rounded-lg px-3 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500 cursor-pointer transition-all">
+                        <option value="en">English</option>
+                        <option value="ko">한국어</option>
+                        <option value="zh">中文</option>
+                        <option value="ja">日本語</option>
+                    </select>
+                </div>
+
+                <!-- Action Button -->
+                <button onclick="openBookingModal()" class="hidden sm:inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-medium text-xs sm:text-sm px-4 py-2.5 rounded-lg shadow-sm hover:shadow transition-all">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <span data-i18n="nav_book">Book Appointment</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+
+        <!-- Hero Section -->
+        <section class="relative py-12 md:py-20 bg-gradient-to-b from-brand-50/50 via-white to-slate-50 border-b border-slate-100 overflow-hidden">
+            <div class="max-w-5xl mx-auto px-4 text-center relative z-10">
+                <span data-i18n="hero_badge" class="inline-block px-3 py-1 bg-brand-100 text-brand-700 rounded-full text-xs font-semibold tracking-wide uppercase mb-4">
+                    Holistic Healing &amp; Evidence-Based Traditional Medicine
+                </span>
+                <h2 data-i18n="hero_title" class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
+                    Restoring Harmony to Body, Mind &amp; Vital Energy
+                </h2>
+                <p data-i18n="hero_desc" class="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto mb-8 font-normal leading-relaxed">
+                    Combining Ancient Traditional Chinese Medicine (TCM) wisdom with AYUSH Siddhars and Ayur integrative care in Chennai.
+                </p>
+
+                <!-- Quick Action CTA Group -->
+                <div class="flex flex-wrap items-center justify-center gap-3.5">
+                    <button onclick="openBookingModal()" class="w-full sm:w-auto bg-brand-600 hover:bg-brand-700 text-white font-semibold px-6 py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                        <i class="fa-regular fa-calendar-check text-lg"></i>
+                        <span data-i18n="cta_book">Book Appointment</span>
+                    </button>
+                    <a href="https://maps.app.goo.gl/7QSFYvToLCJuQALC8?g_st=ac" target="_blank" class="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-semibold px-6 py-3.5 rounded-xl shadow-sm hover:border-slate-300 transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-map-pin text-brand-600"></i>
+                        <span data-i18n="cta_directions">Get Directions</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Practitioners Section -->
+        <section class="py-12 bg-white border-b border-slate-100">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6">
+                <div class="text-center mb-10">
+                    <h3 data-i18n="doctors_title" class="text-xs font-bold uppercase tracking-wider text-brand-600 mb-2">Expert Clinical Specialists</h3>
+                    <h4 data-i18n="doctors_subtitle" class="text-2xl font-bold text-slate-900">Meet Our Doctors</h4>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                    <!-- Doctor Card 1 -->
+                    <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-brand-200 transition-all flex items-start gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-brand-100 text-brand-600 flex items-center justify-center text-xl font-bold shrink-0">
+                            <i class="fa-solid fa-user-doctor"></i>
+                        </div>
+                        <div>
+                            <span class="inline-block px-2.5 py-0.5 rounded text-[11px] font-semibold bg-brand-100 text-brand-700 mb-1" data-i18n="doc1_role">Director</span>
+                            <h5 class="text-lg font-bold text-slate-900">Dr KYUNG JIN MIN</h5>
+                            <p class="text-xs text-brand-600 font-medium mb-2">TCM Specialist</p>
+                            <p class="text-xs text-slate-600 leading-relaxed" data-i18n="doc1_desc">
+                                Expert in Traditional Chinese Medicine, Acupuncture, Gua Sha, Meridian flow regulation, and holistic internal balance therapies.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Doctor Card 2 -->
+                    <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-brand-200 transition-all flex items-start gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center text-xl font-bold shrink-0">
+                            <i class="fa-solid fa-user-doctor"></i>
+                        </div>
+                        <div>
+                            <span class="inline-block px-2.5 py-0.5 rounded text-[11px] font-semibold bg-teal-100 text-teal-700 mb-1" data-i18n="doc2_role">Consultant</span>
+                            <h5 class="text-lg font-bold text-slate-900">Dr Nava Subramanya Bharathi</h5>
+                            <p class="text-xs text-teal-600 font-medium mb-2">BSMS Siddha Medical Consultant</p>
+                            <p class="text-xs text-slate-600 leading-relaxed" data-i18n="doc2_desc">
+                                Specialist in Siddha & AYUSH systems, providing personalized herbal, holistic wellness, and integrative diagnosis.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Knowledge Center & Medical Docs Section -->
+        <section class="py-12 bg-slate-50">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6">
+                <div class="mb-8 text-center sm:text-left">
+                    <span data-i18n="knowledge_tag" class="text-xs font-bold uppercase tracking-wider text-brand-600">Patient Resource Center</span>
+                    <h3 data-i18n="knowledge_title" class="text-2xl font-bold text-slate-900 mt-1">Understanding TCM &amp; Energy Healing</h3>
+                </div>
+
+                <!-- Responsive Scrollable Tabs -->
+                <div class="border-b border-slate-200 mb-6 overflow-x-auto hide-scrollbar">
+                    <nav class="flex space-x-6 min-w-max pb-1" id="knowledgeTabs">
+                        <button onclick="switchTab(1)" id="tab-1" class="tab-btn tab-active pb-3 text-sm font-medium transition-colors">1. Basic Theory</button>
+                        <button onclick="switchTab(2)" id="tab-2" class="tab-btn text-slate-500 hover:text-slate-800 pb-3 text-sm font-medium transition-colors">2. Treatment Methods</button>
+                        <button onclick="switchTab(3)" id="tab-3" class="tab-btn text-slate-500 hover:text-slate-800 pb-3 text-sm font-medium transition-colors">3. Modern TCM</button>
+                        <button onclick="switchTab(4)" id="tab-4" class="tab-btn text-slate-500 hover:text-slate-800 pb-3 text-sm font-medium transition-colors">4. Gua Sha</button>
+                        <button onclick="switchTab(5)" id="tab-5" class="tab-btn text-slate-500 hover:text-slate-800 pb-3 text-sm font-medium transition-colors">5. What Is Qi?</button>
+                        <button onclick="switchTab(6)" id="tab-6" class="tab-btn text-slate-500 hover:text-slate-800 pb-3 text-sm font-medium transition-colors">6. Role of Qi</button>
+                        <button onclick="switchTab(7)" id="tab-7" class="tab-btn text-slate-500 hover:text-slate-800 pb-3 text-sm font-medium transition-colors">7. Yin &amp; Yang</button>
+                        <button onclick="switchTab(8)" id="tab-8" class="tab-btn text-slate-500 hover:text-slate-800 pb-3 text-sm font-medium transition-colors">8. Zheng Qi &amp; Pathogens</button>
+                    </nav>
+                </div>
+
+                <!-- Tab Content Reader Card -->
+                <div class="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-sm transition-all min-h-[320px]" id="tabContentArea">
+                    <!-- Dynamic Javascript Content Populated Here -->
+                </div>
+
+                <!-- Disclaimer Box -->
+                <div class="mt-6 p-4 rounded-xl bg-amber-50/70 border border-amber-200 text-xs text-amber-900 leading-relaxed flex items-start gap-3">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-600 text-base shrink-0 mt-0.5"></i>
+                    <div id="disclaimerText">
+                        <!-- Dynamic disclaimer -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hours & Location Info Section -->
+        <section class="py-12 bg-white border-t border-slate-100">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    
+                    <!-- Timings Card -->
+                    <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
+                        <h4 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                            <i class="fa-regular fa-clock text-brand-600"></i>
+                            <span data-i18n="hours_title">Clinic Opening Hours</span>
+                        </h4>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between items-center pb-2 border-b border-slate-200/60">
+                                <span class="text-slate-600 font-medium" data-i18n="hours_weekday">Mon - Sat:</span>
+                                <span class="font-semibold text-slate-900">10:00 AM - 08:00 PM</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs text-amber-700 bg-amber-50 px-3 py-1.5 rounded-lg">
+                                <span data-i18n="hours_lunch">Lunch Break:</span>
+                                <span class="font-medium">12:30 PM - 02:30 PM</span>
+                            </div>
+                            <div class="flex justify-between items-center pt-1">
+                                <span class="text-slate-600 font-medium" data-i18n="hours_sunday">Sunday:</span>
+                                <span class="font-semibold text-slate-900">03:00 PM - 08:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location Card -->
+                    <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
+                        <h4 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-location-dot text-brand-600"></i>
+                            <span data-i18n="location_title">Location &amp; Address</span>
+                        </h4>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                            Taramani, Chennai, Tamil Nadu, India.
+                        </p>
+                        <a href="https://maps.app.goo.gl/7QSFYvToLCJuQALC8?g_st=ac" target="_blank" class="inline-flex items-center gap-2 bg-brand-50 hover:bg-brand-100 text-brand-700 font-semibold px-4 py-2.5 rounded-xl text-xs transition-colors">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                            <span data-i18n="location_map">Open Google Maps Navigation</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Clean Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <p class="text-slate-200 font-semibold">Dr John's Integrated Clinic * TCM * AYUSH</p>
+                <p class="text-slate-500 mt-0.5">&copy; 2026 Dr John's Integrated Clinic. All rights reserved.</p>
+            </div>
+            <div class="flex items-center space-x-4 text-slate-400">
+                <a href="tel:+919876543210" class="hover:text-white transition-colors"><i class="fa-solid fa-phone mr-1"></i> Phone</a>
+                <a href="https://wa.me/919876543210" target="_blank" class="hover:text-emerald-400 transition-colors"><i class="fa-brands fa-whatsapp mr-1"></i> WhatsApp</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Action Buttons -->
+    <div class="fixed bottom-6 right-6 z-30 flex flex-col gap-3">
+        <a href="https://wa.me/919876543210" target="_blank" aria-label="WhatsApp" class="w-12 h-12 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full shadow-lg flex items-center justify-center text-xl hover:scale-105 transition-transform">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+        <button onclick="openBookingModal()" aria-label="Book" class="w-12 h-12 bg-brand-600 hover:bg-brand-700 text-white rounded-full shadow-lg flex items-center justify-center text-lg hover:scale-105 transition-transform sm:hidden">
+            <i class="fa-regular fa-calendar-plus"></i>
+        </button>
+    </div>
+
+    <!-- Booking Modal Drawer -->
+    <div id="bookingModal" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-xl border border-slate-100 overflow-hidden transform transition-all">
+            <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <h3 class="font-bold text-slate-900 text-base" data-i18n="modal_title">Schedule Consultation</h3>
+                <button onclick="closeBookingModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <form id="bookingForm" onsubmit="handleBookingSubmit(event)" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1" data-i18n="field_name">Patient Name</label>
+                    <input type="text" required placeholder="John Doe" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1" data-i18n="field_doctor">Select Specialist</label>
+                    <select class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                        <option value="min">Dr KYUNG JIN MIN (Director, TCM)</option>
+                        <option value="bharathi">Dr Nava Subramanya Bharathi (Consultant, BSMS)</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1" data-i18n="field_date">Preferred Date</label>
+                        <input type="date" required class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1" data-i18n="field_slot">Preferred Time</label>
+                        <select class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                            <option>10:30 AM</option>
+                            <option>11:30 AM</option>
+                            <option>03:30 PM</option>
+                            <option>05:00 PM</option>
+                            <option>07:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1" data-i18n="field_phone">Phone / WhatsApp</label>
+                    <input type="tel" required placeholder="+91 98765 43210" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+
+                <button type="submit" class="w-full mt-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3 rounded-xl shadow transition-colors text-xs sm:text-sm" data-i18n="btn_confirm">
+                    Confirm Appointment Request
+                </button>
+            </form>
+            <div id="bookingSuccess" class="hidden p-6 text-center">
+                <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-xl mx-auto mb-3">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h4 class="font-bold text-slate-900 text-base mb-1" data-i18n="success_title">Booking Requested!</h4>
+                <p class="text-xs text-slate-600 mb-4" data-i18n="success_desc">Our clinic desk will contact you via WhatsApp/Phone to confirm your appointment slot.</p>
+                <
